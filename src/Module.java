@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Module {
+public class Module implements Serializable {
     private String name; // Name of the Module
     private String moduleCode; // The module code of the Module
     private String description; // The description of the Module

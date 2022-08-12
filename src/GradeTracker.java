@@ -1,7 +1,8 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GradeTracker {
+public class GradeTracker implements Serializable {
     private final ArrayList<Student> students = new ArrayList<>();
     public static final Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
@@ -15,13 +16,14 @@ public class GradeTracker {
 
         int choice = 0;
 
-        while (choice != 4) {
+        while (choice != 5) {
             choice = nextInt(String.format(
                     "%nPlease select the following menu options:%n" +
                     "1. Student Management%n" +
                     "2. Module Management%n" +
                     "3. Assessment Management%n" +
-                    "4. End Programme%n" +
+                    "4. Save/Load File%n" +
+                    "5. End Programme%n" +
                     "Enter Choice: "));
 
 
@@ -34,6 +36,31 @@ public class GradeTracker {
                     break;
                 case 3:
                     gradeTracker.assessmentManagementOptions();
+                    break;
+                case 4:
+                    int subChoice = nextInt("\nSave/Load\n" +
+                            "1. Save\n" +
+                            "2. Load\n" +
+                            "3. Exist\n" +
+                            "Enter: ");
+                    switch (subChoice) {
+                        case 1:
+                            try {
+                                save(gradeTracker);
+                            } catch (RuntimeException e) {
+                                System.out.println("Unable to save file!");
+                            }
+                            break;
+                        case 2:
+                            try {
+                                gradeTracker = load();
+                            } catch (RuntimeException e) {
+                                System.out.println("Unable to load save file");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case 100: // Secret Menu for unused methods
                     try{
@@ -50,8 +77,9 @@ public class GradeTracker {
                     } catch (Exception exception) {
                         System.out.println("Well... Loading Failed?");
                     }
+                    break;
                 default:
-                    if (choice != 4) {
+                    if (choice != 5) {
                         System.out.println("Please select a correct option");
                     }
                     break;
@@ -784,5 +812,42 @@ public class GradeTracker {
             input.next(); // remove and ignore next token
         }
         return input.nextDouble();
+    }
+    public static void save(GradeTracker gradeTracker) {
+        try {
+            File f = new File("./Save.txt");
+            if (f.exists()) {
+                FileOutputStream fos = new FileOutputStream(f);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(gradeTracker);
+                oos.close();
+                fos.close();
+                System.out.println("Saved!");
+            } else {
+                f.createNewFile();
+                FileOutputStream fos = new FileOutputStream(f);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(gradeTracker);
+                oos.close();
+                fos.close();
+                System.out.println("Saved!");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static GradeTracker load() {
+        File f = new File("./Save.txt");
+        try {
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            GradeTracker gradeTracker = (GradeTracker) ois.readObject();
+            System.out.println("Loaded!\n");
+            return gradeTracker;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

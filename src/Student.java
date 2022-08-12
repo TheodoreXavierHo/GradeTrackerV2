@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Student {
+public class Student implements Serializable {
     private String name; // Student Name
     private String studentID; // Student ID (The description of the module.)
     private final ArrayList<Module> modules = new ArrayList<>(); // A list of Modules the Student is taking.
