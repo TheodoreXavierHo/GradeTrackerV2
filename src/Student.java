@@ -2,8 +2,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Student implements Serializable {
+
     private String name; // Student Name
+
     private String studentID; // Student ID (The description of the module.)
+
     private final ArrayList<Module> modules = new ArrayList<>(); // A list of Modules the Student is taking.
 
     public Student (String name, String studentID) {
@@ -63,8 +66,13 @@ public class Student implements Serializable {
         return modules;
     }
 
+    public void removeModules(int index) {
+        this.modules.remove(index);
+    }
+
     // Gets the Module's Index Number in the Modules Array List
-    public int getIndexNumber(String name) {
+
+    public int getModuleIndex(String name) {
         int index = 0;
         if (this.modules.size() > 0){
             for (int x = 0; x < this.modules.size(); x++) {
@@ -75,9 +83,5 @@ public class Student implements Serializable {
             }
         }
         return index;
-    }
-
-    public void removeModules(int index) {
-        this.modules.remove(index);
     }
 }

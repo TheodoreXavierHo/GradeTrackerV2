@@ -2,11 +2,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Module implements Serializable {
+
     private String name; // Name of the Module
+
     private String moduleCode; // The module code of the Module
+
     private String description; // The description of the Module
+
     private int creditUnits; // How many credits the Module carries
     // A list of Assessments that the module uses to determine the final grade of the student (e.g. CA1, CA2, CA3 etc.)
+
     private ArrayList<Assessment> assessments = new ArrayList<>();
 
     public Module(String name, String moduleCode, String description, int creditUnits) {
@@ -57,14 +62,6 @@ public class Module implements Serializable {
         return overallMarks;
     }
 
-    public double getOverallTotalMarks() {
-        double overallTotalMarks = 0;
-        for (Assessment assessment : this.assessments) {
-            overallTotalMarks += assessment.getTotalMarks();
-        }
-        return overallTotalMarks;
-    }
-
     public String getOverallGrade() {
         double marksPercentage =  (getOverallMarks())*100;
         String gradeLetter = "";
@@ -95,37 +92,17 @@ public class Module implements Serializable {
     }
 
     public static double getGradePoint(String grade) {
-        double gp;
-        switch (grade) {
-            case "A+":
-            case "A":
-                gp = 4.0;
-                break;
-            case "B+":
-                gp = 3.5;
-                break;
-            case "B":
-                gp = 3.0;
-                break;
-            case "C+":
-                gp = 2.5;
-                break;
-            case "C":
-                gp = 2.0;
-                break;
-            case "D+":
-                gp = 1.5;
-                break;
-            case "D":
-                gp = 1.0;
-                break;
-            case "F":
-                gp = 0.0;
-                break;
-            default:
-                throw new IllegalArgumentException("There is no grade point average as there is no grade.");
-        }
-        return gp;
+        return switch (grade) {
+            case "A+", "A" -> 4.0;
+            case "B+" -> 3.5;
+            case "B" -> 3.0;
+            case "C+" -> 2.5;
+            case "C" -> 2.0;
+            case "D+" -> 1.5;
+            case "D" -> 1.0;
+            case "F" -> 0.0;
+            default -> throw new IllegalArgumentException("There is no grade point average as there is no grade.");
+        };
     }
 
     public double getWeightedGradePoints() {
@@ -156,7 +133,7 @@ public class Module implements Serializable {
         return assessments;
     }
 
-    public int getIndexNumber(String name) {
+    public int getAssessmentIndex(String name) {
         int index = 0;
         if (this.assessments.size() > 0){
             for (int x = 0; x < this.assessments.size(); x++) {
