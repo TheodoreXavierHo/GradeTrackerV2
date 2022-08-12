@@ -20,6 +20,7 @@ public class Module implements Serializable {
         setDescription(description);
         setCreditUnits(creditUnits);
     }
+    Module(){}
 
     public String getName() {
         return name;
