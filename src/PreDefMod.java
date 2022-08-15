@@ -40,14 +40,14 @@ public enum PreDefMod {
         this.moduleCode = moduleCode;
         this.description = description;
         this.creditUnits = creditUnits;
-        this.assessments.add(new Assessment("CA1", "Common Test 1",
-                100, 10));
-        this.assessments.add(new Assessment("CA2", "Common Test 2",
-                100, 40));
-        this.assessments.add(new Assessment("CA3", "Common Test 3",
-                100, 40));
-        this.assessments.add(new Assessment("CA4", "Common Test 4",
-                100, 10));
+        this.assessments.add(new Assessment("CA1", "CA001",
+                "Common Test 1", 100, 10));
+        this.assessments.add(new Assessment("CA2", "CA002",
+                "Common Test 2", 100, 40));
+        this.assessments.add(new Assessment("CA3", "CA003",
+                "Common Test 3", 100, 40));
+        this.assessments.add(new Assessment("CA4", "CA004",
+                "Common Test 4", 100, 10));
     }
 
     public String getName() {

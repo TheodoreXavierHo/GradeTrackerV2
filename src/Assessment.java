@@ -4,6 +4,7 @@ public class Assessment {
 
     private String description; // The description of the Module
 
+    private String assessmentCode;
 
     private double marks; // The marks scored for this particular Assessment
 
@@ -11,9 +12,11 @@ public class Assessment {
 
     private double weightage; // The percentage of marks (out of the overall) that this Assessment carries
 
+
     // Set up the Assessment Constructor
-    public Assessment(String name, String description, double totalMarks, double weightage) {
+    public Assessment(String name, String assessmentCode, String description, double totalMarks, double weightage) {
         setName(name);
+        setAssessmentCode(assessmentCode);
         setDescription(description);
         setTotalMarks(totalMarks);
         setWeightage(weightage);
@@ -85,5 +88,13 @@ public class Assessment {
 
     public void setWeightage(double weightage) {
         this.weightage = weightage;
+    }
+
+    public String getAssessmentCode() {
+        return assessmentCode;
+    }
+
+    public void setAssessmentCode(String assessmentCode) {
+        this.assessmentCode = assessmentCode;
     }
 }

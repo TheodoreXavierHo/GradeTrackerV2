@@ -110,8 +110,9 @@ public class Module implements Serializable {
         return getGradePoint(getOverallGrade()) * creditUnits;
     }
 
-    public void setAssessments(String name, String description, double totalMarks, double weightage) {
-        this.assessments.add(new Assessment(name, description, totalMarks, weightage));
+    public void setAssessments(String name, String assessmentCode,
+                               String description, double totalMarks, double weightage) {
+        this.assessments.add(new Assessment(name, assessmentCode, description, totalMarks, weightage));
     }
 
     public void setAssessmentsObj(ArrayList<Assessment> assessments) {
@@ -119,12 +120,16 @@ public class Module implements Serializable {
     }
 
     public void getAllAssessments() {
-        this.assessments.forEach(assessment -> System.out.printf("%s - %s - %.0f - %%%.0f%n", assessment.getName(),
-                assessment.getDescription(), assessment.getTotalMarks(), assessment.getWeightage()));
+        this.assessments.forEach(assessment ->
+                System.out.printf("%s - %s - %s - %.0f - %%%.0f%n", assessment.getName(),
+                assessment.getAssessmentCode(), assessment.getDescription(),
+                assessment.getTotalMarks(), assessment.getWeightage()));
     }
 
     public void getAssessmentList(int index) {
-        System.out.printf("%s - %s - %.1f - %%%.0f%n", this.assessments.get(index).getName(),
+        System.out.printf("%s - %s - %s - %.1f - %%%.0f%n",
+                this.assessments.get(index).getName(),
+                this.assessments.get(index).getAssessmentCode(),
                 this.assessments.get(index).getDescription(),
                 this.assessments.get(index).getTotalMarks(),
                 this.assessments.get(index).getWeightage());
