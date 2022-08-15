@@ -131,7 +131,7 @@ public class GradeTracker implements Serializable {
 
                 switch (subChoice) {
                     case 1 -> addRemoveMod(name);
-                    case 2 -> addRemoveAssess();
+                    case 2 -> addRemoveAssess(name, studentID);
                     case 3 -> addOrRemoveMarks(name, studentID);
                     case 4 -> calculateResults();
                     case 5 -> displayModAssess();
@@ -260,8 +260,109 @@ public class GradeTracker implements Serializable {
         System.out.println();
     }
 
-    public void addRemoveAssess() {
+    public void addRemoveAssess(String name, String studentID) {
+        displayStudentModules(name, studentID);
+        System.out.println("""
+                Please enter the module code you would like to add
+                OR
+                Enter "Return" to return
+                Enter:""");
+        String choice = input.nextLine();
 
+        int moduleIndexNumber = this.students.get(getStudentIndex(name)).getModuleIndex(choice);
+
+        if (!choice.equals("Return"))  {
+            if (moduleIndexNumber >= 0) {
+                String moduleName = this.students.get(getStudentIndex(name)).
+                        getModules().get(moduleIndexNumber).getName();
+                int subChoice = 0;
+                while(subChoice != 3) {
+                    subChoice = nextInt(String.format(
+                            "%nAdd or Remove Assessment Options:%n" +
+                                    "1. Add Assessment%n" +
+                                    "2. Remove Assessment%n" +
+                                    "3. Return%n" +
+                                    "Enter Choice: "));
+
+                    switch (subChoice) {
+                        case 1 -> addStudentAssessments(name, studentID, moduleName);
+                        case 2 -> removeStuMod();
+                        default -> {
+                            if (subChoice != 3) {
+                                System.out.printf("%nPlease select the correct option");
+                            }
+                        }
+                    }
+                }
+            } else {
+                System.out.println("Please enter a valid choice");
+            }
+        }
+    }
+
+    public void addStudentAssessments(String name, String studentID, String moduleName) {
+        if (this.students.size() > 0) {
+
+
+            System.out.printf("%nEnter Assessment's Name: ");
+            String assessmentName = input.nextLine();
+
+            System.out.print("Enter Descriptor: ");
+            String descriptor = input.nextLine();
+
+            double totalMarks = nextDouble("Enter total achievable marks: ");
+
+            double weightage = nextDouble("Enter weightage percent: ");
+
+            if (checkIfStudent(name,studentID)) {
+                if (checkIfModule(name, moduleName)) {
+                    double totalWeightage = 0;
+                    for (Assessment assessments : this.students.
+                            get(getStudentIndex(name)).
+                            getModules().get(getStudentIndex(moduleName)).
+                            getAssessments()) {
+                        totalWeightage += assessments.getWeightage();
+                    }
+                    if (!((weightage += totalWeightage) > 100)) {
+                        this.students.
+                                get(getStudentIndex(name)).
+                                getModules().get(
+                                        getStudentIndex(moduleName)
+                                ).setAssessments(assessmentName, descriptor, totalMarks, weightage);
+
+                        System.out.printf("%nTest - Descriptor - Total Achievable Marks - Weightage%n");
+                        this.students.
+                                get(getStudentIndex(name)).
+                                getModules().get(getStudentIndex(moduleName)).
+                                getAssessmentList(
+                                        this.students.
+                                                get(getStudentIndex(name)).
+                                                getModules().
+                                                get(getStudentIndex(moduleName)).
+                                                getAssessmentIndex(assessmentName)
+                                );
+                    } else {
+                        double maxWeightage = 100 - totalWeightage;
+                        if (maxWeightage <= 0) {
+                            System.out.printf("%nMaximum weightage has already been achieve,%n" +
+                                    "Please remove existing assessments to add new assessments");
+                        } else {
+                            System.out.printf("%nThe weightage entered is not valid!%n" +
+                                    "Please enter a value >= %.0f", maxWeightage);
+                        }
+                    }
+                } else {
+                    System.out.println("There is no modules assign to this student!");
+                }
+            } else {
+                System.out.printf("%nStudent does not exist!");
+            }
+            System.out.println();
+
+        } else {
+            System.out.printf("%nThere is no student in the list!");
+        }
+        System.out.println();
     }
 
     public void addOrRemoveMarks(String name, String studentID) {
@@ -645,6 +746,7 @@ public class GradeTracker implements Serializable {
         System.out.println();
     }
 
+
     public boolean checkIfModule(String name, String moduleName) {
         if (this.students.get(getStudentIndex(name)).getModules().size() > 0) {
             return this.students.
@@ -683,14 +785,16 @@ public class GradeTracker implements Serializable {
                     System.out.println();
                     removeAssessments();
                     break;
-                // case 3:
-                    // System.out.println();
-                    // addOrRemoveMarks();
-                    // break;
-                // case 4:
-                    // System.out.println();
-                    // displayAllStudentModelsAssessments();
-                    // break;
+                /*.
+                case 3:
+                    System.out.println();
+                    addOrRemoveMarks();
+                    break;
+                case 4:
+                    System.out.println();
+                    displayAllStudentModelsAssessments();
+                    break;
+                 */
                 default:
                     if (subChoice != 5) {
                         System.out.printf("%nPlease select the correct option");
@@ -987,7 +1091,7 @@ public static void save(GradeTracker) {
                 oos.writeObject(gradeTracker);
                 oos.close();
                 fos.close();
-                System.out.println("Saved!");
+                System.out.println("Saved!\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

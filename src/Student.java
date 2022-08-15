@@ -73,7 +73,7 @@ public class Student implements Serializable {
     // Gets the Module's Index Number in the Modules Array List
 
     public int getModuleIndex(String name) {
-        int index = 0;
+        int index = -1;
         if (this.modules.size() > 0){
             for (int x = 0; x < this.modules.size(); x++) {
                 if ((this.modules.get(x).getName()).equals(name)) {
