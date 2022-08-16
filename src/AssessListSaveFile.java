@@ -21,7 +21,7 @@ public class AssessListSaveFile {
         }
     }
 
-    public void saveModList() {
+    public void saveAssess() {
         try {
             File f = new File("./AssessSave.txt");
             FileOutputStream fos = new FileOutputStream(f);
@@ -39,11 +39,11 @@ public class AssessListSaveFile {
         return assessments;
     }
 
-    public void removeModules(int index) {
+    public void removeAssessments(int index) {
         this.assessments.remove(index);
     }
 
-    public void setModules(String name, String assessmentCode, String description, double totalMarks, double weightage) {
+    public void setAssessments(String name, String assessmentCode, String description, double totalMarks, double weightage) {
         this.assessments.add(new Assessment(name, assessmentCode, description, totalMarks, weightage));
     }
 }

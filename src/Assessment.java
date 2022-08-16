@@ -24,7 +24,7 @@ public class Assessment {
 
     // Get the weighted marks (marks/total marks) of an Assessment
     public double getWeightedMarks() {
-        return getMarks()/getTotalMarks();
+        return (getMarks()/getTotalMarks()) * (weightage*0.01);
     }
 
     // Get Assessment Name

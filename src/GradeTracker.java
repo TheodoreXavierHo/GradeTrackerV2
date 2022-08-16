@@ -322,7 +322,6 @@ public class GradeTracker implements Serializable {
 
     public void removeStudentAssessments(String name, String studentID, String moduleName) {
         if (this.students.size() > 0) {
-            System.out.printf("%nTest - Assessment Code - Descriptor - Total Achievable Marks - Weightage%n");
             displayStudentModAssess(name, studentID, moduleName);
 
             String assessmentName = getAssessmentName();
@@ -622,161 +621,187 @@ public class GradeTracker implements Serializable {
     // Module Management & Methods
     public void moduleManagementOptions() {
         int subChoice = 0;
-        while(subChoice != 6) {
+        while(subChoice != 4) {
             subChoice = nextInt(String.format(
                     "%nModule Management Options:%n" +
-                    "1. Add modules to student%n" +
-                    "2. Remove modules from student%n" +
-                    "3. Calculate Student's marks for module%n" +
-                    "4. Calculate Student's grade for module%n" +
-                    "5. Display all Student's modules%n" +
-                    "6. Return to Main Menu%n" +
-                    "Enter Choice: "
+                            "1. Add Or Remove Modules" +
+                            "3. Add Or Remove Assessments from Modules%n" +
+                            "3. Display All Modules and Assessments%n" +
+                            "4. Return to Main Menu%n" +
+                            "Enter Choice: "
             ));
 
             switch (subChoice) {
                 case 1:
                     System.out.println();
-                    addModule();
+                    addRemoveModule();
                     break;
                 case 2:
                     System.out.println();
-                    removeModule();
+                    addRemoveAssessmentsModules();
                     break;
-                /*.
+
                 case 3:
                     System.out.println();
-                    calculateStudentMarks();
+                    displayAllAssessmentsModules();
                     break;
-                case 4:
-                    System.out.println();
-                    calculateStudentGrade();
-                    break;
-                case 5:
-                    System.out.println();
-                    displayAllStudentModules();
-                    break;
-                 */
                 default:
-                    if (subChoice != 6) {
-                        System.out.printf("%nPlease select the correct option");
+                    if (subChoice != 4) {
+                        System.out.printf("%nPlease select a correct option");
                     }
                     break;
             }
         }
     }
 
-    public void addModule() {
-        String name = getStudentName();
-        String studentID = getStudentID();
-
-        int subChoice = nextInt("""
-                Would you like to
-                1. Add custom module
-                2. Add predefined module
-                3. Exit
-                Enter:\s""");
-
-        switch (subChoice) {
-            case 1:
-                if (students.size() > 0) {
-                    if (checkIfStudent(name, studentID)) {
-                        System.out.printf("%nEnter Module Name: ");
-                        String moduleName = input.nextLine();
-
-                        System.out.print("Enter Module Code: ");
-                        String moduleCode = input.nextLine();
-
-                        System.out.print("Enter Descriptor: ");
-                        String descriptor = input.nextLine();
-
-                        int creditUnits = nextInt("Enter CreditUnits: ");
-
-                        this.students.get(getStudentIndex(name)).
-                                setModules(moduleName, moduleCode, descriptor, creditUnits);
-
-                        System.out.printf("%nProgramme - Module Code - Descriptor - Credit Units%n");
-                        this.students.get(getStudentIndex(name)).
-                                getModuleList(this.students.
-                                        get(getStudentIndex(name)).getModuleIndex(moduleName));
-
-                    } else {
-                        System.out.printf("%nStudent does not exist!");
-                    }
-                } else {
-                    System.out.printf("%nThere is no student in the list!");
-                }
-                System.out.println();
-                break;
-            case 2:
-                System.out.println("\nIndex : Name : Module Code : Description : Credits Units");
-                int x = 1;
-                for (PreDefMod mod : PreDefMod.values()) {
-                    System.out.printf("%d: %s, %s, %s, %d%n", (x),
-                            mod.getName(),mod.getModuleCode(),
-                            mod.getDescription(), mod.getCreditUnits());
-                    x++;
-                }
-                System.out.print("\nEnter Module Code of the module you would like to add: ");
-                String moduleCode = input.nextLine();
-
-                boolean checkIfModAdded = false;
-                for (PreDefMod addMod : PreDefMod.values()) {
-                    if (moduleCode.equals(addMod.getModuleCode())) {
-                        this.students.get(getStudentIndex(name)).setModules(
-                                addMod.getName(), addMod.getModuleCode(),
-                                addMod.getDescription(), addMod.getCreditUnits());
-
-                        this.students.
-                                get(getStudentIndex(name)).
-                                getModules().get(
-                                        getStudentIndex(addMod.getName())
-                                ).setAssessmentsObj(addMod.getAssessments());
-
-                        System.out.printf("%nProgramme - Module Code - Descriptor - Credit Units%n");
-                        this.students.get(getStudentIndex(name)).
-                                getModuleList(this.students.
-                                        get(getStudentIndex(name)).getModuleIndex(addMod.getName()));
-                        checkIfModAdded = true;
-                    }
-                }
-                if (!checkIfModAdded) {
-                    System.out.println("Please enter a valid module code.");
-                }
-                break;
-            case 3:
-                break;
-            default:
-                System.out.println("Please input a value between 1 - 3");
-                break;
-        }
-    }
-
-    public void removeModule() {
-        if (this.students.size() > 0) {
-            String name = getStudentName();
-            String studentID = getStudentID();
-            String moduleName = getModuleName();
-
-            // Check if student already exists
-            if (checkIfStudent(name,studentID)) {
-                if (checkIfModule(name, moduleName)) {
-                    this.students.get(getStudentIndex(name)).
-                            removeModules(this.students.get(getStudentIndex(name))
-                                    .getModuleIndex(moduleName));
-
-                    System.out.printf("%nModule Removed Successfully");
-                } else {
-                    System.out.println("There is no modules assign to this student!");
-                }
-            } else {
-                System.out.printf("%nStudent does not exist!");
-            }
-            System.out.println();
-        } else {
-            System.out.printf("%nThere is no student in the list!");
+    public void addRemoveModule() {
+        ModListSaveFile modListSaveFile = new ModListSaveFile();
+        System.out.printf("%nProgramme - Module Code - Descriptor - Credit Units%n");
+        for (Module module : modListSaveFile.getModules()) {
+            System.out.printf("%s - %s- %s - %d",
+                    module.getName(), module.getModuleCode(),
+                    module.getDescription(), module.getCreditUnits());
         }
         System.out.println();
+        int subChoice = 0;
+        while (subChoice != 3) {
+            subChoice = nextInt("""
+                    1. Add Modules
+                    2. Remove Modules
+                    3. Return to Previous Menu
+                    Enter:
+                    """);
+            switch (subChoice) {
+                case 1 -> {
+                    System.out.printf("%nEnter Module Name: ");
+                    String moduleName = input.nextLine();
+
+                    System.out.print("Enter Module Code: ");
+                    String moduleCode = input.nextLine();
+
+                    System.out.print("Enter Descriptor: ");
+                    String descriptor = input.nextLine();
+
+                    int creditUnits = nextInt("Enter CreditUnits: ");
+
+                    modListSaveFile.getModules().add(new Module(
+                            moduleName, moduleCode,
+                            descriptor, creditUnits)
+                    );
+                    System.out.println();
+                    System.out.println("Module Added!");
+                    System.out.println();
+                }
+                case 2 -> {
+                    System.out.print("Enter Module Code: ");
+                    String moduleCode = input.nextLine();
+
+                    int indexNum = -1;
+                    if (modListSaveFile.getModules().size() > 0){
+                        for (int x = 0; x < modListSaveFile.getModules().size(); x++) {
+                            if ((modListSaveFile.getModules().
+                                    get(x).getModuleCode()).equals(moduleCode)) {
+                                indexNum = x;
+                            }
+                        } if (indexNum != -1) {
+                            modListSaveFile.removeModules(indexNum);
+                            System.out.println();
+                            System.out.println("Module Removed!");
+                            System.out.println();
+                        } else {
+                            System.out.println("There is no Modules by that Code!");
+                        }
+                    } else {
+                        System.out.println("There is no Modules in File!");
+                    }
+                    System.out.println();
+                }
+                default -> {
+                    if (subChoice != 3) {
+                        System.out.println("Please enter a valid choice!");
+                    }
+                }
+            }
+        }
+    }
+
+    public void addRemoveAssessmentsModules() {
+        ModListSaveFile modListSaveFile = new ModListSaveFile();
+        AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
+        displayAllAssessmentsModules();
+
+        System.out.print("Enter Module Code: ");
+        String moduleCode = input.nextLine();
+        boolean ifModuleExist = false;
+        int moduleIndex = 0;
+        for (Module module : modListSaveFile.getModules()) {
+            if (module.getModuleCode().equals(moduleCode)) {
+                ifModuleExist = true;
+                break;
+            }
+            moduleIndex += 1;
+        }
+        if (ifModuleExist) {
+            int subChoice = 0;
+            while (subChoice != 3) {
+                subChoice = nextInt(String.format(
+                        "1. Add Assessments " +
+                                "2. Remove Assessments" +
+                                "3. Return to Previous Menu%n" +
+                                "Enter Choice: "));
+                switch (subChoice) {
+                    case 1 -> {
+                        displayAllAssessments();
+                        System.out.print("Please enter the Assessment Code you would to add: ");
+                        String assessmentCode = input.nextLine();
+                        boolean ifAssessmentExist = false;
+                        for (Assessment assessment : assessListSaveFile.getAssessment()) {
+                            if (assessment.getAssessmentCode().equals(assessmentCode)) {
+                                ifAssessmentExist = true;
+                                break;
+                            }
+                        }
+                        if (ifAssessmentExist) {
+                            //modListSaveFile.getModules().get(moduleIndex).
+                            //        getAssessments().add();
+                        }
+
+                        System.out.println();
+                    }
+                    case 2 -> {
+                        System.out.println();
+                    }
+                    default -> {
+                        if (subChoice != 3) {
+                            System.out.println("Please enter a valid choice!");
+                        }
+                    }
+                }
+            }
+        } else {
+            System.out.println("Please Enter a valid Module Code!");
+        }
+    }
+
+    public void displayAllAssessmentsModules() {
+        ModListSaveFile modListSaveFile = new ModListSaveFile();
+        AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
+
+        System.out.printf("%nProgramme - Module Code - Descriptor - Credit Units%n");
+        for (Module module : modListSaveFile.getModules()) {
+            System.out.printf("%s - %s- %s - %d",
+                    module.getName(), module.getModuleCode(),
+                    module.getDescription(), module.getCreditUnits());
+            System.out.println();
+            System.out.printf("%nTest - Assessment Code - Descriptor - " +
+                    "Total Achievable Marks - Weightage%n");
+            for (Assessment assessment : assessListSaveFile.getAssessment()) {
+                System.out.printf("%s - %s - %s - %.0f - %.0f", assessment.getName(),
+                        assessment.getAssessmentCode(), assessment.getDescription(),
+                        assessment.getTotalMarks(), assessment.getWeightage());
+            }
+            System.out.println("\n\n\n");
+        }
     }
 
     public void displayStudentModules(String name, String studentID) {
@@ -816,38 +841,26 @@ public class GradeTracker implements Serializable {
     // Assessment Management & Methods
     public void assessmentManagementOptions() {
         int subChoice = 0;
-        while(subChoice != 5) {
+        while(subChoice != 3) {
             subChoice = nextInt(String.format(
                     "%nAssessment Management Options:%n" +
-                    "1. Add any number of Assessments to a Module that is assigned to a student%n" +
-                    "2. Remove any Assessment in a Module assigned to a student%n" +
-                    "3. Set or Remove marks from Assessment%n" +
-                    "4. Display all assessment for a module taken by a student%n" +
-                    "5. Return to Main Menu%n" +
+                    "1. Add or Remove User-Defined Assessments" +
+                    "2. Display all Assessment%n" +
+                    "3. Return to Main Menu%n" +
                     "Enter Choice: "
             ));
 
             switch (subChoice) {
                 case 1:
                     System.out.println();
-                    addAssessments();
+                    addRemoveAssessments();
                     break;
                 case 2:
                     System.out.println();
-                    removeAssessments();
+                    displayAllAssessments();
                     break;
-                /*.
-                case 3:
-                    System.out.println();
-                    addOrRemoveMarks();
-                    break;
-                case 4:
-                    System.out.println();
-                    displayAllStudentModelsAssessments();
-                    break;
-                 */
                 default:
-                    if (subChoice != 5) {
+                    if (subChoice != 3) {
                         System.out.printf("%nPlease select the correct option");
                     }
                     break;
@@ -855,108 +868,80 @@ public class GradeTracker implements Serializable {
         }
     }
 
-    public void addAssessments() {
-        if (this.students.size() > 0) {
-            String name = getStudentName();
-            String studentID = getStudentID();
-            String moduleName = getModuleName();
+    public void addRemoveAssessments() {
+        displayAllAssessments();
+        AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
+        int choice = 0;
+        while (choice != 3) {
+            choice = nextInt("""
+                    Would you like to:
+                    1. Add Assessments
+                    2. Remove Assessments
+                    3. Return to previous menu
+                    Enter:
+                    """);
+            switch(choice) {
+                case 1 -> {
+                    System.out.printf("%nEnter Assessment's Name: ");
+                    String assessmentName = input.nextLine();
 
-            System.out.printf("%nEnter Assessment's Name: ");
-            String assessmentName = input.nextLine();
+                    System.out.print("Enter Assessment Code: ");
+                    String assessmentCode = input.nextLine();
 
-            System.out.print("Enter Assessment Code: ");
-            String assessmentCode = input.nextLine();
+                    System.out.print("Enter Descriptor: ");
+                    String descriptor = input.nextLine();
 
-            System.out.print("Enter Descriptor: ");
-            String descriptor = input.nextLine();
+                    double totalMarks = nextDouble("Enter total achievable marks: ");
 
-            double totalMarks = nextDouble("Enter total achievable marks: ");
-
-            double weightage = nextDouble("Enter weightage percent: ");
-
-            if (checkIfStudent(name,studentID)) {
-                if (checkIfModule(name, moduleName)) {
-                    double totalWeightage = 0;
-                    for (Assessment assessments : this.students.
-                            get(getStudentIndex(name)).
-                            getModules().get(getStudentIndex(moduleName)).
-                            getAssessments()) {
-                        totalWeightage += assessments.getWeightage();
-                        }
-                    if (!((weightage += totalWeightage) > 100)) {
-                        this.students.
-                                get(getStudentIndex(name)).
-                                getModules().get(
-                                        getStudentIndex(moduleName)
-                                ).setAssessments(assessmentName, assessmentCode, descriptor, totalMarks, weightage);
-
-                        System.out.printf("%nTest - Assessment Code" +
-                                " - Descriptor - Total Achievable Marks - Weightage%n");
-                        this.students.
-                                get(getStudentIndex(name)).
-                                getModules().get(getStudentIndex(moduleName)).
-                                getAssessmentList(
-                                        this.students.
-                                        get(getStudentIndex(name)).
-                                        getModules().
-                                        get(getStudentIndex(moduleName)).
-                                                getAssessmentIndex(assessmentName)
-                                );
-                        } else {
-                        double maxWeightage = 100 - totalWeightage;
-                        if (maxWeightage <= 0) {
-                            System.out.printf("%nMaximum weightage has already been achieve,%n" +
-                                    "Please remove existing assessments to add new assessments");
-                        } else {
-                            System.out.printf("%nThe weightage entered is not valid!%n" +
-                                    "Please enter a value >= %.0f", maxWeightage);
-                        }
-                    }
-                } else {
-                    System.out.println("There is no modules assign to this student!");
+                    double weightage = nextDouble("Enter weightage percent: ");
+                    assessListSaveFile.setAssessments(assessmentName, assessmentCode,
+                            descriptor, totalMarks, weightage);
+                    System.out.println("""
+                            
+                            Saved!
+                            
+                            """);
                 }
-            } else {
-                System.out.printf("%nStudent does not exist!");
+                case 2 -> {
+                    System.out.print("Enter Assessment Code: ");
+                    String assessmentCode = input.nextLine();
+                    int indexNum = -1;
+                    if (assessListSaveFile.getAssessment().size() > 0){
+                        for (int x = 0; x < assessListSaveFile.getAssessment().size(); x++) {
+                            if ((assessListSaveFile.getAssessment().
+                                    get(x).getAssessmentCode()).equals(assessmentCode)) {
+                                indexNum = x;
+                            }
+                        } if (indexNum != -1) {
+                            assessListSaveFile.removeAssessments(indexNum);
+                            System.out.println();
+                            System.out.println("Assessment Removed!");
+                            System.out.println();
+                        } else {
+                            System.out.println("There is no Assessment by that Code!");
+                        }
+                    } else {
+                        System.out.println("There is no Assessments in File!");
+                    }
+                }
+                default -> {
+                    if (choice != 3) {
+                        System.out.println("Please enter a valid choice!");
+                    }
+                }
             }
-            System.out.println();
-
-        } else {
-            System.out.printf("%nThere is no student in the list!");
         }
-        System.out.println();
     }
 
-    public void removeAssessments() {
-        if (this.students.size() > 0) {
-            String name = getStudentName();
-            String studentID = getStudentID();
-            String moduleName = getModuleName();
-            String assessmentName = getAssessmentName();
-
-            if (checkIfStudent(name,studentID)) {
-                if (checkIfModule(name, moduleName)) {
-                    if (checkIfAssessment(name, moduleName, assessmentName)) {
-                        this.students.
-                                get(getStudentIndex(name)).
-                                getModules().
-                                get(getStudentIndex(moduleName)).
-                                getAssessments().
-                                remove(getStudentIndex(assessmentName));
-                    } else {
-                        System.out.println("There is no assessments assign to this modules!");
-                    }
-                } else {
-                    System.out.println("There is no modules assign to this student!");
-                }
-            } else {
-                System.out.printf("%nStudent does not exist!");
-            }
-            System.out.println();
-
-        } else {
-            System.out.printf("%nThere is no student in the list!");
+    public void displayAllAssessments() {
+        AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
+        System.out.printf("%nTest - Assessment Code - Descriptor - " +
+                    "Total Achievable Marks - Weightage%n");
+        for (Assessment assessment : assessListSaveFile.getAssessment()) {
+            System.out.printf("%s - %s - %s - %.0f - %.0f", assessment.getName(),
+                    assessment.getAssessmentCode(), assessment.getDescription(),
+                    assessment.getTotalMarks(), assessment.getWeightage());
         }
-        System.out.println();
     }
 
     public void displayStudentModAssess(String name, String studentID, String moduleName) {
@@ -970,7 +955,7 @@ public class GradeTracker implements Serializable {
                             ).getAssessments().isEmpty()) {
                         System.out.printf("There is no assessments assigned to %s", moduleName);
                     } else {
-                        System.out.printf("%nTest - Descriptor - Total Achievable Marks - Weightage%n");
+                        System.out.printf("%nTest - Assessment Code - Descriptor - Total Achievable Marks - Weightage%n");
                         this.students.
                                 get(getStudentIndex(name)).
                                 getModules().
@@ -1108,48 +1093,3 @@ public class GradeTracker implements Serializable {
 
     }
 }
-
-// Old Code
-/*
-case 100: // Secret Menu for unused methods
-                    try{
-                        System.out.println("\nSecret Menu");
-                        System.out.println("\nUsed for unused things");
-                        double overallTotalMarks = gradeTracker.students.get(0).getModules().
-                                get(0).getOverallTotalMarks();
-                        System.out.println("Overall total marks for index 0: "
-                                + overallTotalMarks);
-                        double weightageMarks = gradeTracker.students.get(0).getModules().get(0).
-                                getAssessments().get(0).getWeightageMarks();
-                        System.out.println("Weightage Marks for index 0: "
-                                + weightageMarks);
-                    } catch (Exception exception) {
-                        System.out.println("Well... Loading Failed?");
-                    }
-                    break;
- */
-/*.
-public static void save(GradeTracker) {
-        try {
-            File f = new File("./Save.txt");
-            if (f.exists()) {
-                FileOutputStream fos = new FileOutputStream(f);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(gradeTracker);
-                oos.close();
-                fos.close();
-                System.out.println("Saved!");
-            } else {
-                f.createNewFile();
-                FileOutputStream fos = new FileOutputStream(f);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(gradeTracker);
-                oos.close();
-                fos.close();
-                System.out.println("Saved!\n");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
- */
