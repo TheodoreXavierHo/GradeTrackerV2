@@ -110,12 +110,7 @@ public class Module implements Serializable {
         return getGradePoint(getOverallGrade()) * creditUnits;
     }
 
-    public void setAssessments(String name, String assessmentCode,
-                               String description, double totalMarks, double weightage) {
-        this.assessments.add(new Assessment(name, assessmentCode, description, totalMarks, weightage));
-    }
-
-    public void setAssessmentsObj(ArrayList<Assessment> assessments) {
+    public void setAssessments(ArrayList<Assessment> assessments) {
         this.assessments = assessments;
     }
 
@@ -126,6 +121,7 @@ public class Module implements Serializable {
                 assessment.getTotalMarks(), assessment.getWeightage()));
     }
 
+    /*.
     public void getAssessmentList(int index) {
         System.out.printf("%s - %s - %s - %.1f - %%%.0f%n",
                 this.assessments.get(index).getName(),
@@ -134,6 +130,7 @@ public class Module implements Serializable {
                 this.assessments.get(index).getTotalMarks(),
                 this.assessments.get(index).getWeightage());
     }
+     */
 
     public ArrayList<Assessment> getAssessments() {
         return assessments;
