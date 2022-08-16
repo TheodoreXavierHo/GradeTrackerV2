@@ -745,7 +745,7 @@ public class GradeTracker implements Serializable {
             int subChoice = 0;
             while (subChoice != 3) {
                 subChoice = nextInt(String.format(
-                        "1. Add Assessments " +
+                                "1. Add Assessments " +
                                 "2. Remove Assessments" +
                                 "3. Return to Previous Menu%n" +
                                 "Enter Choice: "));
@@ -755,20 +755,28 @@ public class GradeTracker implements Serializable {
                         System.out.print("Please enter the Assessment Code you would to add: ");
                         String assessmentCode = input.nextLine();
                         boolean ifAssessmentExist = false;
+                        int assessmentIndex = 0;
                         for (Assessment assessment : assessListSaveFile.getAssessment()) {
                             if (assessment.getAssessmentCode().equals(assessmentCode)) {
                                 ifAssessmentExist = true;
                                 break;
                             }
+                            assessmentIndex += 1;
                         }
                         if (ifAssessmentExist) {
-                            //modListSaveFile.getModules().get(moduleIndex).
-                            //        getAssessments().add();
+                            modListSaveFile.getModules().get(moduleIndex).
+                                    getAssessments().add(assessListSaveFile.
+                                            getAssessment().get(assessmentIndex));
+                            System.out.println("Assessment Added!");
+                        } else {
+                            System.out.println("Please enter a valid assessment code!");
                         }
-
                         System.out.println();
                     }
                     case 2 -> {
+                        displayAllAssessments();
+                        System.out.print("Please enter the Assessment Code you would to remove: ");
+                        System.out.println();
                         System.out.println();
                     }
                     default -> {
