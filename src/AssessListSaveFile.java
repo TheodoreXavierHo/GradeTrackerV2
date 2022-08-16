@@ -22,8 +22,8 @@ public class AssessListSaveFile {
     }
 
     public void saveAssess() {
+        File f = new File("./AssessSave.txt");
         try {
-            File f = new File("./AssessSave.txt");
             FileOutputStream fos = new FileOutputStream(f);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(this.assessments);

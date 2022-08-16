@@ -38,21 +38,16 @@ public class GradeTracker implements Serializable {
                     gradeTracker.assessmentManagementOptions();
                     break;
                 case 4:
-                    int subChoice = nextInt("""
-
-                            Save/Load
-                            1. Save
-                            2. Load
-                            3. Exist
-                            Enter:\s""");
+                    int subChoice = nextInt(String.format("%n" +
+                            "Save/Load%n" +
+                            "1. Save%n" +
+                            "2. Load%n" +
+                            "3. Exist%n" +
+                            "Enter: "));
                     switch (subChoice) {
                         case 1:
                             try {
                                 save(gradeTracker);
-                                ModListSaveFile modListSaveFile = new ModListSaveFile();
-                                modListSaveFile.saveModList();
-                                AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
-                                assessListSaveFile.saveAssess();
                             } catch (RuntimeException e) {
                                 System.out.println("Unable to save file!");
                             }
@@ -245,8 +240,8 @@ public class GradeTracker implements Serializable {
         System.out.println("""
                 Please enter the module code you would like to add
                 OR
-                Enter "Return" to Return to Previous Menu
-                Enter:""");
+                Enter "Return" to Return to Previous Menu""");
+        System.out.print("Enter: ");
         String choice = input.nextLine();
 
         int moduleIndexNumber = this.students.get(getStudentIndex(name)).getModuleIndex(choice);
@@ -628,8 +623,8 @@ public class GradeTracker implements Serializable {
         while(subChoice != 4) {
             subChoice = nextInt(String.format(
                     "%nModule Management Options:%n" +
-                            "1. Add Or Remove Modules" +
-                            "3. Add Or Remove Assessments from Modules%n" +
+                            "1. Add Or Remove Modules%n" +
+                            "2. Add Or Remove Assessments from Modules%n" +
                             "3. Display All Modules and Assessments%n" +
                             "4. Return to Main Menu%n" +
                             "Enter Choice: "
@@ -669,12 +664,11 @@ public class GradeTracker implements Serializable {
         System.out.println();
         int subChoice = 0;
         while (subChoice != 3) {
-            subChoice = nextInt("""
-                    1. Add Modules
-                    2. Remove Modules
-                    3. Return to Previous Menu
-                    Enter:
-                    """);
+            subChoice = nextInt(String.format("" +
+                    "1. Add Modules%n" +
+                    "2. Remove Modules%n" +
+                    "3. Return to Previous Menu%n" +
+                    "Enter: "));
             switch (subChoice) {
                 case 1 -> {
                     System.out.printf("%nEnter Module Name: ");
@@ -688,10 +682,8 @@ public class GradeTracker implements Serializable {
 
                     int creditUnits = nextInt("Enter CreditUnits: ");
 
-                    modListSaveFile.getModules().add(new Module(
-                            moduleName, moduleCode,
-                            descriptor, creditUnits)
-                    );
+                    modListSaveFile.setModules(moduleName, moduleCode,
+                            descriptor, creditUnits);
                     modListSaveFile.saveModList();
                     System.out.println();
                     System.out.println("Module Added!");
@@ -915,13 +907,12 @@ public class GradeTracker implements Serializable {
         AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
         int choice = 0;
         while (choice != 3) {
-            choice = nextInt("""
-                    Would you like to:
-                    1. Add Assessments
-                    2. Remove Assessments
-                    3. Return to previous menu
-                    Enter:
-                    """);
+            choice = nextInt(String.format("" +
+                    "Would you like to:%n" +
+                    "1. Add Assessments%n" +
+                    "2. Remove Assessments%n" +
+                    "3. Return to previous menu%n" +
+                    "Enter: "));
             switch(choice) {
                 case 1 -> {
                     System.out.printf("%nEnter Assessment's Name: ");

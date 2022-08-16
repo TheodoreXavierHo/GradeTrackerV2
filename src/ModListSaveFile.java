@@ -22,8 +22,8 @@ public class ModListSaveFile extends Module{
     }
 
     public void saveModList() {
+        File f = new File("./ModSave.txt");
         try {
-            File f = new File("./ModSave.txt");
             FileOutputStream fos = new FileOutputStream(f);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(this.modules);
