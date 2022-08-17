@@ -5,10 +5,10 @@ public class AssessListSaveFile {
     private ArrayList<Assessment> assessments = new ArrayList<>();
 
     public AssessListSaveFile() {
-        loadAssess();
+        loadAssessList();
     }
 
-    public void loadAssess() {
+    public void loadAssessList() {
         File f = new File("./AssessSave.txt");
         try {
             FileInputStream fis = new FileInputStream(f);
@@ -21,7 +21,7 @@ public class AssessListSaveFile {
         }
     }
 
-    public void saveAssess() {
+    public void saveAssessList() {
         File f = new File("./AssessSave.txt");
         try {
             FileOutputStream fos = new FileOutputStream(f);
@@ -30,6 +30,20 @@ public class AssessListSaveFile {
             oos.close();
             fos.close();
             System.out.println("Saved!");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void resetAssessList() {
+        File f = new File("./AssessSave.txt");
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject("");
+            oos.close();
+            fos.close();
+            System.out.println("Assessments List Reset!");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9d94cd41-76b0-47da-90bf-92dcfb8577aa" name="Changes" comment="2.00">
-      <change afterPath="$PROJECT_DIR$/ModSave.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Save.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="9d94cd41-76b0-47da-90bf-92dcfb8577aa" name="Changes" comment="1.80">
       <change beforePath="$PROJECT_DIR$/src/AssessListSaveFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AssessListSaveFile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GradeTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GradeTracker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ModListSaveFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ModListSaveFile.java" afterDir="false" />
@@ -23,6 +20,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -39,14 +37,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

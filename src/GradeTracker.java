@@ -42,7 +42,8 @@ public class GradeTracker implements Serializable {
                             "Save/Load%n" +
                             "1. Save%n" +
                             "2. Load%n" +
-                            "3. Exist%n" +
+                            "3. Reset%n" +
+                            "4. Exist%n" +
                             "Enter: "));
                     switch (subChoice) {
                         case 1:
@@ -59,6 +60,43 @@ public class GradeTracker implements Serializable {
                                 System.out.println("Unable to load save file");
                             }
                             break;
+                        case 3:
+                            int miniChoice = nextInt("""
+                                    1. Reset Save
+                                    2. Reset Modules
+                                    3. Reset Assessments
+                                    4. Return
+                                    Enter: \s""");
+                            switch (miniChoice) {
+                                case 1 -> {
+                                    try {
+                                        resetMain();
+                                    } catch (RuntimeException e) {
+                                        System.out.println("Unable to reset save file");
+                                    }
+                                }
+                                case 2 -> {
+                                    try {
+                                        ModListSaveFile modListSaveFile = new ModListSaveFile();
+                                        modListSaveFile.resetModList();
+                                    } catch (RuntimeException e) {
+                                        System.out.println("Unable to reset modules");
+                                    }
+                                }
+                                case 3 -> {
+                                    try {
+                                        AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
+                                        assessListSaveFile.resetAssessList();
+                                    } catch (RuntimeException e) {
+                                        System.out.println("Unable to reset assessments");
+                                    }
+                                }
+                                default -> {
+                                    if (miniChoice != 4) {
+                                        System.out.println("Please enter a valid choice!");
+                                    }
+                                }
+                            }
                         default:
                             break;
                     }
@@ -620,13 +658,14 @@ public class GradeTracker implements Serializable {
     // Module Management & Methods
     public void moduleManagementOptions() {
         int subChoice = 0;
-        while(subChoice != 4) {
+        while(subChoice != 5) {
             subChoice = nextInt(String.format(
                     "%nModule Management Options:%n" +
                             "1. Add Or Remove Modules%n" +
-                            "2. Add Or Remove Assessments from Modules%n" +
-                            "3. Display All Modules and Assessments%n" +
-                            "4. Return to Main Menu%n" +
+                            "2. Edit Modules%n" +
+                            "3. Add Or Remove Assessments from Modules%n" +
+                            "4. Display All Modules and Assessments%n" +
+                            "5. Return to Main Menu%n" +
                             "Enter Choice: "
             ));
 
@@ -637,15 +676,17 @@ public class GradeTracker implements Serializable {
                     break;
                 case 2:
                     System.out.println();
+                    editModule();
+                case 3:
+                    System.out.println();
                     addRemoveAssessmentsModules();
                     break;
-
-                case 3:
+                case 4:
                     System.out.println();
                     displayAllAssessmentsModules();
                     break;
                 default:
-                    if (subChoice != 4) {
+                    if (subChoice != 5) {
                         System.out.printf("%nPlease select a correct option");
                     }
                     break;
@@ -682,13 +723,17 @@ public class GradeTracker implements Serializable {
 
                     int creditUnits = nextInt("Enter CreditUnits: ");
 
-                    modListSaveFile.setModules(moduleName, moduleCode,
-                            descriptor, creditUnits);
-                    modListSaveFile.saveModList();
-                    System.out.println();
-                    System.out.println("Module Added!");
-                    System.out.println();
-                }
+                    if (!isModuleCodeUsed(moduleCode)) {
+                        modListSaveFile.setModules(moduleName, moduleCode,
+                                descriptor, creditUnits);
+                        modListSaveFile.saveModList();
+                        System.out.println();
+                        System.out.println("Module Added!");
+                        System.out.println();
+                    } else {
+                        System.out.println("A module with same module code exist!");
+
+                    }                }
                 case 2 -> {
                     System.out.print("Enter Module Code: ");
                     String moduleCode = input.nextLine();
@@ -721,6 +766,94 @@ public class GradeTracker implements Serializable {
                 }
             }
         }
+    }
+
+    public void editModule() {
+        ModListSaveFile modListSaveFile = new ModListSaveFile();
+        System.out.printf("%nProgramme - Module Code - Descriptor - Credit Units%n");
+        for (Module module : modListSaveFile.getModules()) {
+            System.out.printf("%s - %s - %s - %d",
+                    module.getName(), module.getModuleCode(),
+                    module.getDescription(), module.getCreditUnits());
+        }
+        System.out.println();
+        System.out.print("Enter Module Code: ");
+        String moduleCode = input.nextLine();
+
+        int indexNum = -1;
+        if (modListSaveFile.getModules().size() > 0){
+            for (int x = 0; x < modListSaveFile.getModules().size(); x++) {
+                if ((modListSaveFile.getModules().
+                        get(x).getModuleCode()).equals(moduleCode)) {
+                    indexNum = x;
+                }
+            } if (indexNum != -1) {
+                System.out.printf("%nProgramme - Module Code - Descriptor - Credit Units%n");
+                System.out.printf("%s - %s - %s - %d",
+                        modListSaveFile.getModules().get(indexNum).getName(),
+                        modListSaveFile.getModules().get(indexNum).getModuleCode(),
+                        modListSaveFile.getModules().get(indexNum).getDescription(),
+                        modListSaveFile.getModules().get(indexNum).getCreditUnits());
+                int choice = nextInt("""
+                        Edit:
+                        1. Module Name
+                        2. Module Code
+                        3. Description
+                        4. Credit Unit
+                        5. All
+                        6. Return to Previous Menu
+                        Enter:\s""");
+
+                switch (choice) {
+                    case 1 -> {
+                        System.out.print("Enter New Module Name: ");
+                        String newModuleName = input.nextLine();
+                        modListSaveFile.getModules().get(indexNum).setName(newModuleName);
+                    }
+                    case 2 -> {
+                        System.out.print("Enter New Module Code: ");
+                        String newModuleCode = input.nextLine();
+                        modListSaveFile.getModules().get(indexNum).setModuleCode(newModuleCode);
+                    }
+                    case 3 -> {
+                        System.out.print("Enter New Description: ");
+                        String newDescription = input.nextLine();
+                        modListSaveFile.getModules().get(indexNum).setDescription(newDescription);
+                    }
+                    case 4 -> {
+                        int newCreditUnit = nextInt("Enter New Credit Unit: ");
+                        modListSaveFile.getModules().get(indexNum).setCreditUnits(newCreditUnit);
+                    }
+                    case 5 -> {
+                        System.out.print("Enter New Module Name: ");
+                        String newModuleName = input.nextLine();
+                        modListSaveFile.getModules().get(indexNum).setName(newModuleName);
+                        System.out.print("Enter New Module Code: ");
+                        String newModuleCode = input.nextLine();
+                        modListSaveFile.getModules().get(indexNum).setModuleCode(newModuleCode);
+                        System.out.print("Enter New Description: ");
+                        String newDescription = input.nextLine();
+                        modListSaveFile.getModules().get(indexNum).setDescription(newDescription);
+                        int newCreditUnit = nextInt("Enter New Credit Unit: ");
+                        modListSaveFile.getModules().get(indexNum).setCreditUnits(newCreditUnit);
+                    }
+                    default -> {
+                        if (choice != 6) {
+                            System.out.print("Enter a valid choice!");
+                        }
+                    }
+                }
+                modListSaveFile.saveModList();
+                System.out.println();
+                System.out.println("Module Edited!");
+                System.out.println();
+            } else {
+                System.out.println("There is no Modules by that Code!");
+            }
+        } else {
+            System.out.println("There is no Modules in File!");
+        }
+        System.out.println();
     }
 
     public void addRemoveAssessmentsModules() {
@@ -875,12 +1008,13 @@ public class GradeTracker implements Serializable {
     // Assessment Management & Methods
     public void assessmentManagementOptions() {
         int subChoice = 0;
-        while(subChoice != 3) {
+        while(subChoice != 4) {
             subChoice = nextInt(String.format(
                     "%nAssessment Management Options:%n" +
-                    "1. Add or Remove User-Defined Assessments" +
-                    "2. Display all Assessment%n" +
-                    "3. Return to Main Menu%n" +
+                    "1. Add or Remove User-Defined Assessments%n" +
+                    "2. Edit Assessments" +
+                    "3. Display all Assessment%n" +
+                    "4. Return to Main Menu%n" +
                     "Enter Choice: "
             ));
 
@@ -891,10 +1025,14 @@ public class GradeTracker implements Serializable {
                     break;
                 case 2:
                     System.out.println();
+                    editAssessments();
+                    break;
+                case 3:
+                    System.out.println();
                     displayAllAssessments();
                     break;
                 default:
-                    if (subChoice != 3) {
+                    if (subChoice != 4) {
                         System.out.printf("%nPlease select the correct option");
                     }
                     break;
@@ -939,7 +1077,7 @@ public class GradeTracker implements Serializable {
                     if (!ifAssesFound) {
                         assessListSaveFile.setAssessments(assessmentName, assessmentCode,
                                 descriptor, totalMarks, weightage);
-                        assessListSaveFile.saveAssess();
+                        assessListSaveFile.saveAssessList();
                         System.out.println("""
                                                             
                                 Saved!
@@ -961,7 +1099,7 @@ public class GradeTracker implements Serializable {
                             }
                         } if (indexNum != -1) {
                             assessListSaveFile.removeAssessments(indexNum);
-                            assessListSaveFile.saveAssess();
+                            assessListSaveFile.saveAssessList();
                             System.out.println();
                             System.out.println("Assessment Removed!");
                             System.out.println();
@@ -979,6 +1117,103 @@ public class GradeTracker implements Serializable {
                 }
             }
         }
+    }
+
+    public void editAssessments() {
+        AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
+        displayAllAssessments();
+        System.out.println();
+        System.out.print("Enter Module Code: ");
+        String assessmentCode = input.nextLine();
+
+        int indexNum = -1;
+        if (assessListSaveFile.getAssessment().size() > 0){
+            for (int x = 0; x < assessListSaveFile.getAssessment().size(); x++) {
+                if ((assessListSaveFile.getAssessment().
+                        get(x).getAssessmentCode()).equals(assessmentCode)) {
+                    indexNum = x;
+                }
+            } if (indexNum != -1) {
+                System.out.printf("%nTest - Assessment Code - Descriptor - " +
+                        "Total Achievable Marks - Weightage%n");
+                System.out.printf("%s - %s - %s - %.0f, %.0f",
+                        assessListSaveFile.getAssessment().get(indexNum).getName(),
+                        assessListSaveFile.getAssessment().get(indexNum).getAssessmentCode(),
+                        assessListSaveFile.getAssessment().get(indexNum).getDescription(),
+                        assessListSaveFile.getAssessment().get(indexNum).getTotalMarks(),
+                        assessListSaveFile.getAssessment().get(indexNum).getWeightage()
+                );
+                int choice = nextInt("""
+                        Edit:
+                        1. Assessment Name
+                        2. Assessment Code
+                        3. Description
+                        4. Total Marks
+                        5. Weightage
+                        6. All
+                        7. Return to Previous Menu
+                        Enter:\s""");
+
+                switch (choice) {
+                    case 1 -> {
+                        System.out.print("Enter New Assessment Name: ");
+                        String newAssessmentName = input.nextLine();
+                        assessListSaveFile.getAssessment().get(indexNum).setName(newAssessmentName);
+                    }
+                    case 2 -> {
+                        System.out.print("Enter New Assessment Code: ");
+                        String newAssessmentCode = input.nextLine();
+                        assessListSaveFile.getAssessment().get(indexNum).setAssessmentCode(newAssessmentCode);
+                    }
+                    case 3 -> {
+                        System.out.print("Enter New Description: ");
+                        String newDescription = input.nextLine();
+                        assessListSaveFile.getAssessment().get(indexNum).setDescription(newDescription);
+                    }
+                    case 4 -> {
+                        double newTotalMarks = nextDouble("Enter New Total Marks: ");
+                        assessListSaveFile.getAssessment().get(indexNum).setTotalMarks(newTotalMarks);
+                    }
+                    case 5 -> {
+                        double newWeightage = nextDouble("Enter New Weightage");
+                        assessListSaveFile.getAssessment().get(indexNum).setWeightage(newWeightage);
+                    }
+                    case 6 -> {
+                        System.out.print("Enter New Assessment Name: ");
+                        String newAssessmentName = input.nextLine();
+                        assessListSaveFile.getAssessment().get(indexNum).setName(newAssessmentName);
+
+                        System.out.print("Enter New Assessment Code: ");
+                        String newAssessmentCode = input.nextLine();
+                        assessListSaveFile.getAssessment().get(indexNum).setAssessmentCode(newAssessmentCode);
+
+                        System.out.print("Enter New Description: ");
+                        String newDescription = input.nextLine();
+                        assessListSaveFile.getAssessment().get(indexNum).setDescription(newDescription);
+
+                        double newTotalMarks = nextDouble("Enter New Total Marks: ");
+                        assessListSaveFile.getAssessment().get(indexNum).setTotalMarks(newTotalMarks);
+
+                        double newWeightage = nextDouble("Enter New Weightage");
+                        assessListSaveFile.getAssessment().get(indexNum).setWeightage(newWeightage);
+                    }
+                    default -> {
+                        if (choice != 7) {
+                            System.out.print("Enter a valid choice!");
+                        }
+                    }
+                }
+                assessListSaveFile.saveAssessList();
+                System.out.println();
+                System.out.println("Module Edited!");
+                System.out.println();
+            } else {
+                System.out.println("There is no Modules by that Code!");
+            }
+        } else {
+            System.out.println("There is no Modules in File!");
+        }
+        System.out.println();
     }
 
     public void displayAllAssessments() {
@@ -1087,6 +1322,16 @@ public class GradeTracker implements Serializable {
         return index;
     }
 
+    public boolean isModuleCodeUsed(String moduleCode) {
+        ModListSaveFile modListSaveFile = new ModListSaveFile();
+        for (Module module : modListSaveFile.getModules()) {
+            if (module.getModuleCode().equals(moduleCode)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Used for exception handling when user inputs a wrong data type into an Integer
     public static int nextInt(String prompt) {
         System.out.print(prompt);
@@ -1126,6 +1371,20 @@ public class GradeTracker implements Serializable {
         }
     }
 
+    public static void resetMain() {
+        try {
+            File f = new File("./Save.txt");
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject("");
+            oos.close();
+            fos.close();
+            System.out.println("Saved!");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Load Grade Tracker info from Save.txt file in src folder
     public static GradeTracker load() {
         File f = new File("./Save.txt");
@@ -1138,6 +1397,5 @@ public class GradeTracker implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

@@ -35,6 +35,20 @@ public class ModListSaveFile extends Module{
         }
     }
 
+    public void resetModList() {
+        File f = new File("./ModSave.txt");
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject("");
+            oos.close();
+            fos.close();
+            System.out.println("Module List Reset!!");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ArrayList<Module> getModules() {
         return modules;
     }
