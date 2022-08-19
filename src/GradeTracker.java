@@ -134,6 +134,7 @@ public class GradeTracker implements Serializable {
     }
 
     public void studentManagementOptions() {
+        load();
         int subChoice = 0;
         while(subChoice != 5) {
 
@@ -366,8 +367,10 @@ public class GradeTracker implements Serializable {
                             );
 
 
-                    System.out.printf("%nTest - Assessment Code - Descriptor - Total Achievable Marks - Weightage%n");
-                    this.students.get(getStudentIndex(name)).getModules().get(moduleIndex).getAllAssessments();
+                    System.out.printf("%nTest - Assessment Code - Descriptor - " +
+                            "Total Achievable Marks - Weightage%n");
+                    this.students.get(getStudentIndex(name)).
+                            getModules().get(moduleIndex).getAllAssessments();
                     checkIfAssessmentAdded = true;
                 }
             }
@@ -612,8 +615,10 @@ public class GradeTracker implements Serializable {
 
             System.out.printf("%nTest - Assessment Code - Descriptor - Total Achievable Marks - Weightage%n");
             for (Assessment assessment : module.getAssessments()) {
-                System.out.printf("%s - %s - %s - %.0f - %.0f", assessment.getName(), assessment.getAssessmentCode(),
-                        assessment.getDescription(), assessment.getTotalMarks(), assessment.getWeightage());
+                System.out.printf("%s - %s - %s - %.0f - %.0f", assessment.getName(),
+                        assessment.getAssessmentCode(),
+                        assessment.getDescription(), assessment.getTotalMarks(),
+                        assessment.getWeightage());
             }
             System.out.println("\n\n\n");
         }
@@ -758,7 +763,7 @@ public class GradeTracker implements Serializable {
 
                     int creditUnits = nextInt("Enter CreditUnits: ");
 
-                    if (!isModuleCodeUsed(moduleCode)) {
+                    if (isModuleCodeNotUsed(moduleCode)) {
                         modListSaveFile.setModules(moduleName, moduleCode,
                                 descriptor, creditUnits);
                         modListSaveFile.saveModList();
@@ -767,8 +772,8 @@ public class GradeTracker implements Serializable {
                         System.out.println();
                     } else {
                         System.out.println("A module with same module code exist!");
-
-                    }                }
+                    }
+                }
                 case 2 -> {
                     System.out.print("Enter Module Code: ");
                     String moduleCode = input.nextLine();
@@ -848,7 +853,11 @@ public class GradeTracker implements Serializable {
                     case 2 -> {
                         System.out.print("Enter New Module Code: ");
                         String newModuleCode = input.nextLine();
-                        modListSaveFile.getModules().get(indexNum).setModuleCode(newModuleCode);
+                        if (isModuleCodeNotUsed(newModuleCode)) {
+                            modListSaveFile.getModules().get(indexNum).setModuleCode(newModuleCode);
+                        } else {
+                            System.out.println("A Module with same Module Code exist!");
+                        }
                     }
                     case 3 -> {
                         System.out.print("Enter New Description: ");
@@ -863,14 +872,22 @@ public class GradeTracker implements Serializable {
                         System.out.print("Enter New Module Name: ");
                         String newModuleName = input.nextLine();
                         modListSaveFile.getModules().get(indexNum).setName(newModuleName);
+
                         System.out.print("Enter New Module Code: ");
                         String newModuleCode = input.nextLine();
-                        modListSaveFile.getModules().get(indexNum).setModuleCode(newModuleCode);
-                        System.out.print("Enter New Description: ");
-                        String newDescription = input.nextLine();
-                        modListSaveFile.getModules().get(indexNum).setDescription(newDescription);
-                        int newCreditUnit = nextInt("Enter New Credit Unit: ");
-                        modListSaveFile.getModules().get(indexNum).setCreditUnits(newCreditUnit);
+                        if (isModuleCodeNotUsed(newModuleCode)) {
+                            modListSaveFile.getModules().get(indexNum).setModuleCode(newModuleCode);
+
+                            System.out.print("Enter New Description: ");
+                            String newDescription = input.nextLine();
+                            modListSaveFile.getModules().get(indexNum).setDescription(newDescription);
+
+                            int newCreditUnit = nextInt("Enter New Credit Unit: ");
+                            modListSaveFile.getModules().get(indexNum).setCreditUnits(newCreditUnit);
+
+                        } else {
+                            System.out.println("A module with same module code exist!");
+                        }
                     }
                     default -> {
                         if (choice != 6) {
@@ -930,15 +947,28 @@ public class GradeTracker implements Serializable {
                             assessmentIndex += 1;
                         }
                         if (ifAssessmentExist) {
+                            double totalWeightage = 0;
+                            for (Assessment assessment :
+                                    modListSaveFile.getModules().get(moduleIndex).
+                                    getAssessments()) {
+                                totalWeightage += assessment.getWeightage();
+                            }
+                            double weightageAllowed = 100 - (totalWeightage +
+                                    assessListSaveFile.getAssessment().get(assessmentIndex).getWeightage());
 
-                            modListSaveFile.getModules().get(moduleIndex).
-                                    getAssessments().add(assessListSaveFile.
-                                            getAssessment().get(assessmentIndex));
+                            if(weightageAllowed >= 0) {
+                                modListSaveFile.getModules().get(moduleIndex).
+                                        getAssessments().add(assessListSaveFile.
+                                                getAssessment().get(assessmentIndex));
 
-                            modListSaveFile.saveModList();
+                                modListSaveFile.saveModList();
 
-                            System.out.println("Assessment Added!");
-
+                                System.out.println("Assessment Added!");
+                                modListSaveFile.saveModList();
+                            } else  {
+                                System.out.printf("%nPlease enter a assessment with a weightage >= %%%.0f!",
+                                        (100 - totalWeightage));
+                            }
                         } else {
                             System.out.println("Please enter a valid assessment code!");
                         }
@@ -1200,7 +1230,11 @@ public class GradeTracker implements Serializable {
                     case 2 -> {
                         System.out.print("Enter New Assessment Code: ");
                         String newAssessmentCode = input.nextLine();
-                        assessListSaveFile.getAssessment().get(indexNum).setAssessmentCode(newAssessmentCode);
+                        if (isAssessmentCodeNotUsed(newAssessmentCode)) {
+                            assessListSaveFile.getAssessment().get(indexNum).setAssessmentCode(newAssessmentCode);
+                        } else {
+                            System.out.println("A Assessment with same Assessment Code exist!");
+                        }
                     }
                     case 3 -> {
                         System.out.print("Enter New Description: ");
@@ -1222,17 +1256,21 @@ public class GradeTracker implements Serializable {
 
                         System.out.print("Enter New Assessment Code: ");
                         String newAssessmentCode = input.nextLine();
-                        assessListSaveFile.getAssessment().get(indexNum).setAssessmentCode(newAssessmentCode);
+                        if (isAssessmentCodeNotUsed(newAssessmentCode)) {
+                            assessListSaveFile.getAssessment().get(indexNum).setAssessmentCode(newAssessmentCode);
 
-                        System.out.print("Enter New Description: ");
-                        String newDescription = input.nextLine();
-                        assessListSaveFile.getAssessment().get(indexNum).setDescription(newDescription);
+                            System.out.print("Enter New Description: ");
+                            String newDescription = input.nextLine();
+                            assessListSaveFile.getAssessment().get(indexNum).setDescription(newDescription);
 
-                        double newTotalMarks = nextDouble("Enter New Total Marks: ");
-                        assessListSaveFile.getAssessment().get(indexNum).setTotalMarks(newTotalMarks);
+                            double newTotalMarks = nextDouble("Enter New Total Marks: ");
+                            assessListSaveFile.getAssessment().get(indexNum).setTotalMarks(newTotalMarks);
 
-                        double newWeightage = nextDouble("Enter New Weightage");
-                        assessListSaveFile.getAssessment().get(indexNum).setWeightage(newWeightage);
+                            double newWeightage = nextDouble("Enter New Weightage");
+                            assessListSaveFile.getAssessment().get(indexNum).setWeightage(newWeightage);
+                        } else {
+                            System.out.println("A Assessment with same Assessment Code exist!");
+                        }
                     }
                     default -> {
                         if (choice != 7) {
@@ -1275,7 +1313,8 @@ public class GradeTracker implements Serializable {
                             ).getAssessments().isEmpty()) {
                         System.out.printf("There is no assessments assigned to %s", moduleName);
                     } else {
-                        System.out.printf("%nTest - Assessment Code - Descriptor - Total Achievable Marks - Weightage%n");
+                        System.out.printf("%nTest - Assessment Code - Descriptor - " +
+                                "Total Achievable Marks - Weightage%n");
                         this.students.
                                 get(getStudentIndex(name)).
                                 getModules().
@@ -1316,6 +1355,19 @@ public class GradeTracker implements Serializable {
         } else {
             return false;
         }
+    }
+
+    public boolean isAssessmentCodeNotUsed(String assessmentCode) {
+        AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
+
+        if (assessListSaveFile.getAssessment().size() > 0) {
+            for (Assessment assessment : assessListSaveFile.getAssessment()) {
+                if (assessmentCode.equals(assessment.getAssessmentCode())) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     // Commonly used methods
@@ -1359,14 +1411,17 @@ public class GradeTracker implements Serializable {
         return index;
     }
 
-    public boolean isModuleCodeUsed(String moduleCode) {
+    public boolean isModuleCodeNotUsed(String moduleCode) {
         ModListSaveFile modListSaveFile = new ModListSaveFile();
-        for (Module module : modListSaveFile.getModules()) {
-            if (module.getModuleCode().equals(moduleCode)) {
-                return true;
+
+        if (modListSaveFile.getModules().size() > 0) {
+            for (Module module : modListSaveFile.getModules()) {
+                if (moduleCode.equals(module.getModuleCode())) {
+                    return false;
+                }
             }
         }
-        return false;
+        return true;
     }
 
     // Used for exception handling when user inputs a wrong data type into an Integer

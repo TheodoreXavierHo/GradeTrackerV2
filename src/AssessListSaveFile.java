@@ -65,8 +65,9 @@ public class AssessListSaveFile extends Assessment{
                                double totalMarks, double weightage) {
         this.assessments.add(new Assessment(name, assessmentCode, description, totalMarks, weightage));
     }
-
-    public void setAssessmentsObj(ArrayList<Assessment> assessments) {
+}
+/*
+public void setAssessmentsObj(ArrayList<Assessment> assessments) {
         this.assessments = assessments;
     }
-}
+ */
