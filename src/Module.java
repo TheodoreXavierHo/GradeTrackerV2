@@ -125,11 +125,11 @@ public class Module implements Serializable {
         return assessments;
     }
 
-    public int getAssessmentIndex(String name) {
+    public int getAssessmentIndex(String code) {
         int index = 0;
         if (this.assessments.size() > 0){
             for (int x = 0; x < this.assessments.size(); x++) {
-                if ((this.assessments.get(x).getName()).equals(name)) {
+                if ((this.assessments.get(x).getAssessmentCode()).equals(code)) {
                     index = x;
                     break;
                 }
