@@ -11,7 +11,7 @@ public class GradeTracker implements Serializable {
     }
 
     public static void run() {
-        System.out.printf("Welcome to the Student Tracker Application.%n%n");
+        startText();
         GradeTracker gradeTracker = new GradeTracker();
 
         int choice = 0;
@@ -62,10 +62,12 @@ public class GradeTracker implements Serializable {
                             break;
                         case 3:
                             int miniChoice = nextInt("""
+                                    
                                     1. Reset Save
                                     2. Reset Modules
                                     3. Reset Assessments
-                                    4. Return
+                                    4. Reset All
+                                    5. Return
                                     Enter: \s""");
                             switch (miniChoice) {
                                 case 1 -> {
@@ -91,8 +93,19 @@ public class GradeTracker implements Serializable {
                                         System.out.println("Unable to reset assessments");
                                     }
                                 }
+                                case 4 -> {
+                                    ModListSaveFile modListSaveFile = new ModListSaveFile();
+                                    AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
+                                    try {
+                                        resetMain();
+                                        modListSaveFile.resetModList();
+                                        assessListSaveFile.resetAssessList();
+                                    } catch (RuntimeException e) {
+                                        System.out.println("Unable to Reset");
+                                    }
+                                }
                                 default -> {
-                                    if (miniChoice != 4) {
+                                    if (miniChoice != 5) {
                                         System.out.println("Please enter a valid choice!");
                                     }
                                 }
@@ -108,7 +121,7 @@ public class GradeTracker implements Serializable {
                     break;
             }
         }
-        System.out.printf("%n%nApplication Closed!%nHave a Nice Day!");
+        endText();
     }
 
     public void studentManagementOptions() {
@@ -600,19 +613,31 @@ public class GradeTracker implements Serializable {
     public void addNewStudent() {
         String name = getStudentName();
         String studentID = getStudentID();
-
-        // Check if student already exists
-        if (!checkIfStudent(name,studentID)) {
-            this.students.add(new Student(name, studentID));
-            System.out.println("Name - Student ID");
-            System.out.printf("%s - %s%n", this.students.get(getStudentIndex(name)).getName(),
-                    this.students.get(getStudentIndex(name)).getStudentID());
+        if (name.equals("") || studentID.equals(""))
+            System.out.println("Please enter a valid name");
+        else {
+            // Check if student already exists
+            boolean studentIDCheck = false;
+            if (this.students.size() > 0) {
+                for (Student student : students) {
+                    if (student.getStudentID().equals(studentID)) {
+                        studentIDCheck = true;
+                        break;
+                    }
+                }
+            }
+            if (!studentIDCheck) {
+                this.students.add(new Student(name, studentID));
+                System.out.println("Name - Student ID");
+                System.out.printf("%s - %s%n", this.students.get(getStudentIndex(name)).getName(),
+                        this.students.get(getStudentIndex(name)).getStudentID());
+                System.out.println();
+                System.out.printf("%nStudent Added Successfully");
+            } else {
+                System.out.printf("%nStudent already exist or Student ID is in used!");
+            }
             System.out.println();
-            System.out.printf("%nStudent Added Successfully");
-        } else {
-            System.out.printf("%nStudent already exist!");
         }
-        System.out.println();
     }
 
     public void deleteStudent() {
@@ -645,9 +670,10 @@ public class GradeTracker implements Serializable {
     public boolean checkIfStudent(String name, String studentID) {
         if (this.students.size() > 0) {
             for (Student student : students) {
-                if (student.getName().equals(name) &&
-                        student.getStudentID().equals(studentID)) {
-                    return true;
+                if (student.getName().equals(name)) {
+                    if (student.getStudentID().equals(studentID)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -698,7 +724,7 @@ public class GradeTracker implements Serializable {
         ModListSaveFile modListSaveFile = new ModListSaveFile();
         System.out.printf("%nProgramme - Module Code - Descriptor - Credit Units%n");
         for (Module module : modListSaveFile.getModules()) {
-            System.out.printf("%s - %s- %s - %d",
+            System.out.printf("%s - %s- %s - %d%n",
                     module.getName(), module.getModuleCode(),
                     module.getDescription(), module.getCreditUnits());
         }
@@ -876,8 +902,8 @@ public class GradeTracker implements Serializable {
             int subChoice = 0;
             while (subChoice != 3) {
                 subChoice = nextInt(String.format(
-                                "1. Add Assessments " +
-                                "2. Remove Assessments" +
+                                "1. Add Assessments%n" +
+                                "2. Remove Assessments%n" +
                                 "3. Return to Previous Menu%n" +
                                 "Enter Choice: "));
                 switch (subChoice) {
@@ -954,20 +980,22 @@ public class GradeTracker implements Serializable {
         ModListSaveFile modListSaveFile = new ModListSaveFile();
         AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
 
-        System.out.printf("%nProgramme - Module Code - Descriptor - Credit Units%n");
         for (Module module : modListSaveFile.getModules()) {
-            System.out.printf("%s - %s- %s - %d",
+            System.out.println("____________________________________________________________");
+            System.out.printf("%nProgramme - Module Code - Descriptor - Credit Units%n");
+            System.out.printf("%s - %s- %s - %d%n",
                     module.getName(), module.getModuleCode(),
                     module.getDescription(), module.getCreditUnits());
-            System.out.println();
+
             System.out.printf("%nTest - Assessment Code - Descriptor - " +
                     "Total Achievable Marks - Weightage%n");
             for (Assessment assessment : assessListSaveFile.getAssessment()) {
-                System.out.printf("%s - %s - %s - %.0f - %.0f", assessment.getName(),
+                System.out.printf("%s - %s - %s - %.0f - %.0f%n", assessment.getName(),
                         assessment.getAssessmentCode(), assessment.getDescription(),
                         assessment.getTotalMarks(), assessment.getWeightage());
             }
-            System.out.println("\n\n\n");
+            System.out.println("____________________________________________________________");
+            System.out.println("\n\n");
         }
     }
 
@@ -1012,7 +1040,7 @@ public class GradeTracker implements Serializable {
             subChoice = nextInt(String.format(
                     "%nAssessment Management Options:%n" +
                     "1. Add or Remove User-Defined Assessments%n" +
-                    "2. Edit Assessments" +
+                    "2. Edit Assessments%n" +
                     "3. Display all Assessment%n" +
                     "4. Return to Main Menu%n" +
                     "Enter Choice: "
@@ -1221,7 +1249,7 @@ public class GradeTracker implements Serializable {
         System.out.printf("%nTest - Assessment Code - Descriptor - " +
                     "Total Achievable Marks - Weightage%n");
         for (Assessment assessment : assessListSaveFile.getAssessment()) {
-            System.out.printf("%s - %s - %s - %.0f - %.0f", assessment.getName(),
+            System.out.printf("%s - %s - %s - %.0f - %.0f%n", assessment.getName(),
                     assessment.getAssessmentCode(), assessment.getDescription(),
                     assessment.getTotalMarks(), assessment.getWeightage());
         }
@@ -1379,7 +1407,7 @@ public class GradeTracker implements Serializable {
             oos.writeObject("");
             oos.close();
             fos.close();
-            System.out.println("Saved!");
+            System.out.println("Save Reset!");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -1398,4 +1426,83 @@ public class GradeTracker implements Serializable {
             throw new RuntimeException(e);
         }
     }
+
+    public static void endText() {
+        System.out.println("""
+                  ___,             _                                  \s
+                 /   |            | | o                o              \s
+                |    |    _    _  | |     __   __, _|_     __   _  _  \s
+                |    |  |/ \\_|/ \\_|/  |  /    /  |  |  |  /  \\_/ |/ | \s
+                 \\__/\\_/|__/ |__/ |__/|_/\\___/\\_/|_/|_/|_/\\__/   |  |_/
+                       /|   /|                                        \s
+                       \\|   \\|                                        \s
+                 ___                            \s
+                / (_)               |         | \s
+                \\__   _  _    _   __|   _   __| \s
+                /    / |/ |  |/  /  |  |/  /  | \s
+                \\___/  |  |_/|__/\\_/|_/|__/\\_/|_/""");
+
+        System.out.println("""
+                 _   _                           _   _ _            ____              _\s
+                | | | | __ ___   _____    __ _  | \\ | (_) ___ ___  |  _ \\  __ _ _   _| |
+                | |_| |/ _` \\ \\ / / _ \\  / _` | |  \\| | |/ __/ _ \\ | | | |/ _` | | | | |
+                |  _  | (_| |\\ V /  __/ | (_| | | |\\  | | (_|  __/ | |_| | (_| | |_| |_|
+                |_| |_|\\__,_| \\_/ \\___|  \\__,_| |_| \\_|_|\\___\\___| |____/ \\__,_|\\__, (_)
+                                                                                |___/  \s
+                """);
+    }
+
+    public static void startText() {
+        System.out.println("""
+                __        __   _                            _          _   _         \s
+                \\ \\      / /__| | ___ ___  _ __ ___   ___  | |_ ___   | |_| |__   ___\s
+                 \\ \\ /\\ / / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\ | __/ _ \\  | __| '_ \\ / _ \\
+                  \\ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) | | |_| | | |  __/
+                   \\_/\\_/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\__\\___/   \\__|_| |_|\\___|
+                                                                                     \s
+                 ____  _             _            _     _____               _            \s
+                / ___|| |_ _   _  __| | ___ _ __ | |_  |_   _| __ __ _  ___| | _____ _ __\s
+                \\___ \\| __| | | |/ _` |/ _ \\ '_ \\| __|   | || '__/ _` |/ __| |/ / _ \\ '__|
+                 ___) | |_| |_| | (_| |  __/ | | | |_    | || | | (_| | (__|   <  __/ |  \s
+                |____/ \\__|\\__,_|\\__,_|\\___|_| |_|\\__|   |_||_|  \\__,_|\\___|_|\\_\\___|_|  \s
+                                                                                         \s
+                    _                _ _           _   _            \s
+                   / \\   _ __  _ __ | (_) ___ __ _| |_(_) ___  _ __ \s
+                  / _ \\ | '_ \\| '_ \\| | |/ __/ _` | __| |/ _ \\| '_ \\\s
+                 / ___ \\| |_) | |_) | | | (_| (_| | |_| | (_) | | | |
+                /_/   \\_\\ .__/| .__/|_|_|\\___\\__,_|\\__|_|\\___/|_| |_|
+                        |_|   |_|                                   \s
+                                
+                """);
+    }
 }
+/* To Add All Pre Defined mods
+public static void temp() {
+
+
+        ModListSaveFile modListSaveFile = new ModListSaveFile();
+
+        int indexNum = 0;
+        for (PreDefMod addMod : PreDefMod.values()) {
+            modListSaveFile.setModules(addMod.getName(), addMod.getModuleCode(),
+                    addMod.getDescription(), addMod.getCreditUnits());
+            modListSaveFile.getModules().get(indexNum).setAssessments(addMod.getAssessments());
+            indexNum++;
+        }
+        modListSaveFile.saveModList();
+
+
+        ArrayList<Assessment> temp = new ArrayList<>();
+
+        temp.add(new Assessment("CA1", "CA001", "Common Test 1", 100, 10));
+        temp.add(new Assessment("CA2", "CA002", "Common Test 2", 100, 40));
+        temp.add(new Assessment("CA3", "CA003", "Common Test 3", 100, 40));
+        temp.add(new Assessment("CA4", "CA004", "Common Test 4", 100, 10));
+
+        AssessListSaveFile assessListSaveFile = new AssessListSaveFile();
+        assessListSaveFile.setAssessmentsObj(temp);
+        assessListSaveFile.saveAssessList();
+
+
+    }
+ */

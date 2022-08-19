@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d94cd41-76b0-47da-90bf-92dcfb8577aa" name="Changes" comment="1.80">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModSave.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ModSave.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Save.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Save.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AssessListSaveFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AssessListSaveFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Assessment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Assessment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GradeTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GradeTracker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ModListSaveFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ModListSaveFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Module.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PreDefMod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PreDefMod.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +51,20 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration name="GradeTracker" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="GradeTracker" />
+      <module name="GradeTrackerV2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.GradeTracker" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

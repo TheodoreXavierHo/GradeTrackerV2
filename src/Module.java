@@ -121,17 +121,6 @@ public class Module implements Serializable {
                 assessment.getTotalMarks(), assessment.getWeightage()));
     }
 
-    /*.
-    public void getAssessmentList(int index) {
-        System.out.printf("%s - %s - %s - %.1f - %%%.0f%n",
-                this.assessments.get(index).getName(),
-                this.assessments.get(index).getAssessmentCode(),
-                this.assessments.get(index).getDescription(),
-                this.assessments.get(index).getTotalMarks(),
-                this.assessments.get(index).getWeightage());
-    }
-     */
-
     public ArrayList<Assessment> getAssessments() {
         return assessments;
     }

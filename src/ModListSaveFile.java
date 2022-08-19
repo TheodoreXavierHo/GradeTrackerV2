@@ -5,12 +5,16 @@ public class ModListSaveFile extends Module{
     private ArrayList<Module> modules = new ArrayList<>();
 
     public ModListSaveFile() {
-        loadMod();
+        try {
+            loadMod();
+        } catch (RuntimeException e) {
+            System.out.println("Empty Module List");
+        }
     }
 
     public void loadMod() {
-        File f = new File("./ModSave.txt");
         try {
+            File f = new File("./ModSave.txt");
             FileInputStream fis = new FileInputStream(f);
             ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<Module> modules = (ArrayList<Module>) ois.readObject();
@@ -36,8 +40,8 @@ public class ModListSaveFile extends Module{
     }
 
     public void resetModList() {
-        File f = new File("./ModSave.txt");
         try {
+            File f = new File("./ModSave.txt");
             FileOutputStream fos = new FileOutputStream(f);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject("");

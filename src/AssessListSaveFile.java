@@ -1,16 +1,20 @@
 import java.io.*;
 import java.util.ArrayList;
 
-public class AssessListSaveFile {
+public class AssessListSaveFile extends Assessment{
     private ArrayList<Assessment> assessments = new ArrayList<>();
 
     public AssessListSaveFile() {
-        loadAssessList();
+        try {
+            loadAssessList();
+        } catch (RuntimeException e) {
+            System.out.println("Empty Assessment List");
+        }
     }
 
     public void loadAssessList() {
-        File f = new File("./AssessSave.txt");
         try {
+            File f = new File("./AssessSave.txt");
             FileInputStream fis = new FileInputStream(f);
             ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<Assessment> assessments = (ArrayList<Assessment>) ois.readObject();
@@ -36,8 +40,8 @@ public class AssessListSaveFile {
     }
 
     public void resetAssessList() {
-        File f = new File("./AssessSave.txt");
         try {
+            File f = new File("./AssessSave.txt");
             FileOutputStream fos = new FileOutputStream(f);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject("");
@@ -57,7 +61,12 @@ public class AssessListSaveFile {
         this.assessments.remove(index);
     }
 
-    public void setAssessments(String name, String assessmentCode, String description, double totalMarks, double weightage) {
+    public void setAssessments(String name, String assessmentCode, String description,
+                               double totalMarks, double weightage) {
         this.assessments.add(new Assessment(name, assessmentCode, description, totalMarks, weightage));
+    }
+
+    public void setAssessmentsObj(ArrayList<Assessment> assessments) {
+        this.assessments = assessments;
     }
 }

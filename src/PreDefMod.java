@@ -3,28 +3,28 @@ import java.util.ArrayList;
 public enum PreDefMod {
     // declare constant of enum type
     PF("Programming Fundamentals", "PF001",
-            "Java", 1),
+            "Java", 10),
 
     CN("Communication and Networks", "CN001",
-            "Computer Networking", 1),
+            "Computer Networking", 10),
 
     BSP("Business Statistics with Python", "BSP001",
-            "Business Statistics", 1),
+            "Business Statistics", 10),
 
     PS("Problem Solving", "PS001",
             "Coding Logic & Python", 1),
 
     DMS("Database Management and Security", "DMS001",
-            "Security Management", 1),
+            "Security Management", 10),
 
     ID("Interaction Design", "ID001",
-            "Design Interaction", 1),
+            "Design Interaction", 10),
 
     IPM("IT Project Management", "IPM001",
-            "Management of IT Projects", 1),
+            "Management of IT Projects", 10),
 
     SDT("Systems Development Technique", "SDT001",
-            "Development Techniques for Systems", 1);
+            "Development Techniques for Systems", 10);
 
     // Instance fields
     private final String name;

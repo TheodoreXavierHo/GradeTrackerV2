@@ -1,0 +1,315 @@
+Index: src/GradeTracker.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/GradeTracker.java b/src/GradeTracker.java
+--- a/src/GradeTracker.java	
++++ b/src/GradeTracker.java	
+@@ -20,10 +20,9 @@
+             choice = nextInt(String.format(
+                     "%nPlease select the following menu options:%n" +
+                     "1. Student Management%n" +
+-                    "2. Module Management%n" +
+-                    "3. Assessment Management%n" +
+-                    "4. Save/Load File%n" +
+-                    "5. End Programme%n" +
++                    "2. Modules & Assessments Management%n" +
++                    "3. Save/Load File%n" +
++                    "4. End Programme%n" +
+                     "Enter Choice: "));
+ 
+ 
+@@ -130,7 +129,7 @@
+                                 "Enter Choice: ", name));
+ 
+                 switch (subChoice) {
+-                    case 1 -> addRemoveMod(name);
++                    case 1 -> addRemoveMod(name, studentID);
+                     case 2 -> addRemoveAssess();
+                     case 3 -> addOrRemoveMarks(name, studentID);
+                     case 4 -> calculateResults();
+@@ -145,7 +144,7 @@
+         }
+     }
+ 
+-    public void addRemoveMod(String name) {
++    public void addRemoveMod(String name, String studentID) {
+         int subChoice = 0;
+         while(subChoice != 3) {
+             subChoice = nextInt(String.format(
+@@ -157,7 +156,7 @@
+ 
+             switch (subChoice) {
+                 case 1 -> addStuMod(name);
+-                case 2 -> removeStuMod();
++                case 2 -> removeStuMod(name, studentID);
+                 default -> {
+                     if (subChoice != 3) {
+                         System.out.printf("%nPlease select the correct option");
+@@ -168,13 +167,13 @@
+     }
+ 
+     public void addStuMod(String name) {
+-        ModListSaveFile modListSaveFile = new ModListSaveFile();
++        ModuleList moduleList = new ModuleList();
+         System.out.println("\nIndex : Name : Module Code : Description : Credits Units");
+         int x = 1;
+-        for (Module mod : modListSaveFile.getModules()) {
++        for (Module modules : moduleList.getModules()) {
+             System.out.printf("%d: %s, %s, %s, %d%n", (x),
+-                    mod.getName(),mod.getModuleCode(),
+-                    mod.getDescription(), mod.getCreditUnits());
++                    modules.getName(),modules.getModuleCode(),
++                    modules.getDescription(), modules.getCreditUnits());
+             x++;
+         }
+ 
+@@ -182,7 +181,7 @@
+         String moduleCode = input.nextLine();
+ 
+         boolean checkIfModAdded = false;
+-        for (Module addMod : modListSaveFile.getModules()) {
++        for (Module addMod : moduleList.getModules()) {
+             if (moduleCode.equals(addMod.getModuleCode())) {
+                 this.students.get(getStudentIndex(name)).setModules(
+                         addMod.getName(), addMod.getModuleCode(),
+@@ -204,13 +203,10 @@
+         if (!checkIfModAdded) {
+             System.out.println("Please enter a valid module code.");
+         }
+-
+     }
+ 
+-    public void removeStuMod() {
++    public void removeStuMod(String name, String studentID) {
+         if (this.students.size() > 0) {
+-            String name = getStudentName();
+-            String studentID = getStudentID();
+             String moduleName = getModuleName();
+ 
+             // Check if student already exists
+@@ -234,6 +230,14 @@
+         System.out.println();
+     }
+ 
++    public void addRemoveAssess() {
++
++    }
++
++    public void calculateResults() {
++
++    }
++
+     public void calculateStudentMarks() {
+         if (this.students.size() > 0) {
+             String name = getStudentName();
+@@ -259,8 +263,7 @@
+         }
+         System.out.println();
+     }
+-
+-    public void addRemoveAssess() {
++    public void displayModAssess() {
+ 
+     }
+ 
+@@ -430,21 +433,9 @@
+         }
+     }
+ 
+-    // Checks if the student exist in the Students Array List if so, return true if not returns false
+-    public boolean checkIfStudent(String name, String studentID) {
+-        if (this.students.size() > 0) {
+-            for (Student student : students) {
+-                if (student.getName().equals(name) &&
+-                        student.getStudentID().equals(studentID)) {
+-                    return true;
+-                }
+-            }
+-        }
+-        return false;
+-    }
+-
+ 
+     // Module Management & Methods
++
+     public void moduleManagementOptions() {
+         int subChoice = 0;
+         while(subChoice != 6) {
+@@ -488,7 +479,6 @@
+             }
+         }
+     }
+-
+     public void addModule() {
+         String name = getStudentName();
+         String studentID = getStudentID();
+@@ -645,20 +635,6 @@
+         System.out.println();
+     }
+ 
+-    public boolean checkIfModule(String name, String moduleName) {
+-        if (this.students.get(getStudentIndex(name)).getModules().size() > 0) {
+-            return this.students.
+-                    get(getStudentIndex(name)).
+-                    getModules().
+-                    get(this.students.
+-                            get(getStudentIndex(name)).
+-                            getModuleIndex(moduleName)
+-                    ).getName().
+-                    equals(moduleName);
+-        } else {
+-            return false;
+-        }
+-    }
+ 
+     // Assessment Management & Methods
+     public void assessmentManagementOptions() {
+@@ -766,7 +742,6 @@
+         }
+         System.out.println();
+     }
+-
+     public void removeAssessments() {
+         if (this.students.size() > 0) {
+             String name = getStudentName();
+@@ -835,6 +810,35 @@
+     }
+ 
+ 
++    // Commonly used methods
++    // Checks if the student exist in the Students Array List if so, return true if not returns false
++
++    public boolean checkIfStudent(String name, String studentID) {
++        if (this.students.size() > 0) {
++            for (Student student : students) {
++                if (student.getName().equals(name) &&
++                        student.getStudentID().equals(studentID)) {
++                    return true;
++                }
++            }
++        }
++        return false;
++    }
++    public boolean checkIfModule(String name, String moduleName) {
++        if (this.students.get(getStudentIndex(name)).getModules().size() > 0) {
++            return this.students.
++                    get(getStudentIndex(name)).
++                    getModules().
++                    get(this.students.
++                            get(getStudentIndex(name)).
++                            getModuleIndex(moduleName)
++                    ).getName().
++                    equals(moduleName);
++        } else {
++            return false;
++        }
++    }
++
+     // Check if assessment exist in Array List if so, return true if not returns false
+     public boolean checkIfAssessment(String name, String moduleName, String assessmentName) {
+         if (this.students.get(getStudentIndex(name)).getModules().size() > 0) {
+@@ -854,7 +858,6 @@
+         }
+     }
+ 
+-    // Commonly used methods
+     // Gets Student name
+     public String getStudentName() {
+         // Ask user for name of student
+Index: src/ModListSaveFile.java
+===================================================================
+diff --git a/src/ModListSaveFile.java b/src/ModuleList.java
+rename from src/ModListSaveFile.java
+rename to src/ModuleList.java
+--- a/src/ModListSaveFile.java	
++++ b/src/ModuleList.java	
+@@ -1,10 +1,10 @@
+ import java.io.*;
+ import java.util.ArrayList;
+ 
+-public class ModListSaveFile extends Module{
++public class ModuleList {
+     private ArrayList<Module> modules = new ArrayList<>();
+ 
+-    public ModListSaveFile() {
++    public ModuleList() {
+         loadMod();
+     }
+ 
+Index: src/Module.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Module.java b/src/Module.java
+--- a/src/Module.java	
++++ b/src/Module.java	
+@@ -20,7 +20,6 @@
+         setDescription(description);
+         setCreditUnits(creditUnits);
+     }
+-    Module(){}
+ 
+     public String getName() {
+         return name;
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -1,13 +1,11 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ChangeListManager">
+-    <list default="true" id="9d94cd41-76b0-47da-90bf-92dcfb8577aa" name="Changes" comment="1.24">
+-      <change afterPath="$PROJECT_DIR$/src/ModListSaveFile.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Assessment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Assessment.java" afterDir="false" />
++    <list default="true" id="9d94cd41-76b0-47da-90bf-92dcfb8577aa" name="Changes" comment="1.61">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/GradeTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GradeTracker.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/ModListSaveFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ModuleList.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Module.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Student.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -59,7 +57,21 @@
+       <option name="project" value="LOCAL" />
+       <updated>1660289863516</updated>
+     </task>
+-    <option name="localTasksCounter" value="2" />
++    <task id="LOCAL-00002" summary="1.60">
++      <created>1660326301857</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1660326301857</updated>
++    </task>
++    <task id="LOCAL-00003" summary="1.61">
++      <created>1660326467437</created>
++      <option name="number" value="00003" />
++      <option name="presentableId" value="LOCAL-00003" />
++      <option name="project" value="LOCAL" />
++      <updated>1660326467437</updated>
++    </task>
++    <option name="localTasksCounter" value="4" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -75,6 +87,8 @@
+   </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="1.24" />
+-    <option name="LAST_COMMIT_MESSAGE" value="1.24" />
++    <MESSAGE value="1.60" />
++    <MESSAGE value="1.61" />
++    <option name="LAST_COMMIT_MESSAGE" value="1.61" />
+   </component>
+ </project>
+\ No newline at end of file

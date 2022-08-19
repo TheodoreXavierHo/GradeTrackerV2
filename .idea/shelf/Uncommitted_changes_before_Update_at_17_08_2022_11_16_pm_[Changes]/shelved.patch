@@ -1,0 +1,58 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"9d94cd41-76b0-47da-90bf-92dcfb8577aa\" name=\"Changes\" comment=\"2.00\">\r\n      <change afterPath=\"$PROJECT_DIR$/ModSave.txt\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Save.txt\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/AssessListSaveFile.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/AssessListSaveFile.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/GradeTracker.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/GradeTracker.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/ModListSaveFile.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/ModListSaveFile.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"UPDATE_TYPE\" value=\"REBASE\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2DE07OHeEEXfcg49Zz0CPjtEnhZ\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"ASKED_ADD_EXTERNAL_FILES\": \"true\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"settings.editor.selected.configurable\": \"preferences.lookFeel\"\r\n  }\r\n}]]></component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"9d94cd41-76b0-47da-90bf-92dcfb8577aa\" name=\"Changes\" comment=\"\" />\r\n      <created>1660248771003</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1660248771003</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"1.24\">\r\n      <created>1660289863516</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1660289863516</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"1.50\">\r\n      <created>1660298374442</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1660298374442</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"1.80\">\r\n      <created>1660644157028</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1660644157028</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"2.00\">\r\n      <created>1660665535955</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1660665535955</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"5\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\r\n    <MESSAGE value=\"1.24\" />\r\n    <MESSAGE value=\"1.50\" />\r\n    <MESSAGE value=\"1.80\" />\r\n    <MESSAGE value=\"2.00\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"2.00\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 8c58fa84fd559c5f26ac8c9c10d2f8d20ff3972a)
++++ b/.idea/workspace.xml	(date 1660749407877)
+@@ -2,12 +2,7 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="9d94cd41-76b0-47da-90bf-92dcfb8577aa" name="Changes" comment="2.00">
+-      <change afterPath="$PROJECT_DIR$/ModSave.txt" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Save.txt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/AssessListSaveFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AssessListSaveFile.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/GradeTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GradeTracker.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/ModListSaveFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ModListSaveFile.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/AssessSave.txt" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -39,14 +34,14 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "ASKED_ADD_EXTERNAL_FILES": "true",
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "settings.editor.selected.configurable": "preferences.lookFeel"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+Index: AssessSave.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/AssessSave.txt b/AssessSave.txt
+new file mode 100644
+--- /dev/null	(date 1660666633002)
++++ b/AssessSave.txt	(date 1660666633002)
+@@ -0,0 +1,1 @@
++�� sr java.util.ArrayListx����a� I sizexp    w    x
+\ No newline at end of file

@@ -1,4 +1,6 @@
-public class Assessment {
+import java.io.Serializable;
+
+public class Assessment implements Serializable {
 
     private String name; // Name of the Assessment (e.g. CA1, CA2, etc.).
 
@@ -21,6 +23,8 @@ public class Assessment {
         setTotalMarks(totalMarks);
         setWeightage(weightage);
     }
+
+    Assessment(){}
 
     // Get the weighted marks (marks/total marks) of an Assessment
     public double getWeightedMarks() {
