@@ -114,6 +114,15 @@ public class GradeTracker implements Serializable {
                             break;
                     }
                     break;
+                case 100:
+                    System.out.printf("%nProgramme - Module Code - Descriptor - Credit Units%n");
+                    for (PreDefMod addMod : PreDefMod.values()) {
+                        ArrayList<Assessment> x = addMod.getAssessments();
+                        System.out.printf("%s - %s - %s - %d%n", addMod.getName(), addMod.getModuleCode(),
+                                addMod.getDescription(), addMod.getCreditUnits());
+                        System.out.println(x);
+                    }
+                    break;
                 default:
                     if (choice != 5) {
                         System.out.println("Please select a correct option");
